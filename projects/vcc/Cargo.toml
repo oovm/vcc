@@ -1,17 +1,23 @@
 [package]
-name = "sub_projects"
-publish = false
+name = "vcc"
 version = "0.0.0"
 authors = ["Aster <192607617@qq.com>"]
 description = "..."
 repository = "https://github.com/oovm/sub_projects"
 documentation = "https://docs.rs/sub_projects"
-readme = "Readme.md"
+readme = "readme.md"
 license = "MPL-2.0"
 edition = "2021"
 exclude = ["package.json", "tests/**"]
 
 [dependencies]
+wasm-opt = "0.116.0"
+wasmprinter = "0.2.75"
+wasmtime-wasi = "15.0.1"
+
+[dependencies.wasmtime]
+version = "15.0.1"
+features = ["component-model"]
 
 [dev-dependencies]
 
