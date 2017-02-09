@@ -10,7 +10,11 @@ license = "MPL-2.0"
 edition = "2021"
 exclude = ["package.json", "tests/**"]
 
+
 [dependencies]
+clap = { version = "4.4.11", features = ["derive"] }
+wax = "0.6.0"
+nyar-error = "0.1.11"
 wasm-opt = "0.116.0"
 wasmprinter = "0.2.75"
 wasmtime-wasi = "15.0.1"
