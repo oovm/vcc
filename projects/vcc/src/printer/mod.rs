@@ -3,15 +3,20 @@ use std::path::Path;
 use nyar_error::NyarError;
 use wasmprinter::Printer;
 use wax::{Glob, LinkBehavior};
-
-pub fn print_wat_all(dir: &Path) -> Result<(), NyarError> {
+use std::io::Write;
+pub fn print_wat_all(folder: &Path) -> Result<(), NyarError> {
     let glob = Glob::new("*.{wasm}").unwrap();
     for entry in glob
-        .walk_with_behavior("doc", LinkBehavior::ReadTarget)
+        .walk_with_behavior(folder, LinkBehavior::ReadTarget)
         .not(["**/secret/**"])
         .unwrap()
     {
-        let file = entry?;
+        let file = match entry {
+            Ok(o) => { o }
+            Err(e) => {
+                Err(NyarError::custom(e))?
+            }
+        };
         let path = file.path();
         match print_wat(&path)? {
             Some(s) => {
@@ -24,9 +29,9 @@ pub fn print_wat_all(dir: &Path) -> Result<(), NyarError> {
     Ok(())
 }
 
-pub fn print_wat(path: &Path) -> Result<Option<String>, NyarError> {
-    let bytes = match path.extension() {
-        Some(s) if path.is_file() && s.eq("wasm") => std::fs::read(&path)?,
+pub fn print_wat(file: &Path) -> Result<Option<String>, NyarError> {
+    let bytes = match file.extension() {
+        Some(s) if file.is_file() && s.eq("wasm") => std::fs::read(&file)?,
         _ => return Ok(None),
     };
     // println!("Find file: {}", path.display());

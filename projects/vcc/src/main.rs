@@ -1,7 +1,7 @@
 use clap::Parser;
+use nyar_error::NyarError;
 use vcc::{Valor};
 
-fn main() {
-    let opts: Valor = Valor::parse();
-    opts.run()
+fn main() -> Result<(), NyarError> {
+    Valor::parse().run()
 }

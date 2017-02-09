@@ -1,4 +1,5 @@
 use clap::Parser;
+use nyar_error::NyarError;
 
 #[derive(Parser)]
 pub struct RunCommand {
@@ -14,12 +15,13 @@ pub struct RunCommand {
 }
 
 impl RunCommand {
-    pub fn run(&self) {
+    pub fn run(&self) -> Result<(), NyarError> {
         if self.release {
             println!("Running in release mode: {}", self.optimize);
         } else {
             println!("Running in debug mode");
             // 在 debug 模式下执行运行逻辑
         }
+        Ok(())
     }
 }

@@ -1,4 +1,5 @@
 use clap::{Parser, Subcommand};
+use nyar_error::NyarError;
 use crate::{BuildCommand, RunCommand};
 
 pub mod run;
@@ -23,7 +24,7 @@ pub enum ValorCommands {
 
 
 impl Valor {
-    pub fn run(&self) {
+    pub fn run(&self) -> Result<(), NyarError> {
         match &self.command {
             ValorCommands::Build(cmd) => {
                 cmd.run()
@@ -32,6 +33,7 @@ impl Valor {
                 cmd.run()
             }
         }
+
     }
 }
 

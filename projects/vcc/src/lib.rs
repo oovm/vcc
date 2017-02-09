@@ -10,6 +10,8 @@ mod cmds;
 pub(crate) mod printer;
 pub(crate) mod optimizer;
 
+pub(crate) mod runner;
+
 use clap::{Parser, Subcommand};
 pub use crate::errors::{Error, Result};
 pub use crate::cmds::build::BuildCommand;

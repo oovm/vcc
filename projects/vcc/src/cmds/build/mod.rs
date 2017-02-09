@@ -1,4 +1,7 @@
 use clap::Parser;
+use nyar_error::NyarError;
+use crate::optimizer::optimize_wasm_all;
+use crate::printer::print_wat_all;
 
 #[derive(Parser)]
 pub struct BuildCommand {
@@ -14,12 +17,13 @@ pub struct BuildCommand {
 }
 
 impl BuildCommand {
-    pub fn run(&self) {
-        if self.release {
-            println!("Running in release mode: {}", self.optimize);
-        } else {
-            println!("Building in debug mode");
-            // 在 debug 模式下执行构建逻辑
-        }
+    pub fn run(&self) -> Result<(), NyarError> {
+        let current = std::env::current_dir()?;
+        let source = current.join("target/debug/valkyrie");
+        let target = current.join("target/release/valkyrie");
+        optimize_wasm_all(&source, &target)?;
+        print_wat_all(&source)?;
+        print_wat_all(&target)?;
+        Ok(())
     }
 }
