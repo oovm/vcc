@@ -3,6 +3,7 @@ use nyar_error::NyarError;
 use crate::optimizer::optimize_wasm_all;
 use crate::printer::print_wat_all;
 
+/// `valor build --release`
 #[derive(Parser)]
 pub struct BuildCommand {
     /// Running under debug mode

@@ -1,10 +1,10 @@
 [package]
 name = "vcc"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["Aster <192607617@qq.com>"]
-description = "..."
-repository = "https://github.com/oovm/sub_projects"
-documentation = "https://docs.rs/sub_projects"
+description = "Valkyrie Compiler Collection"
+repository = "https://github.com/oovm/vcc"
+documentation = "https://docs.rs/vcc"
 readme = "readme.md"
 license = "MPL-2.0"
 edition = "2021"
@@ -24,6 +24,10 @@ version = "15.0.1"
 features = ["component-model"]
 
 [dev-dependencies]
+
+[[bin]]
+name = "valor"
+path = "src/main.rs"
 
 [features]
 default = []

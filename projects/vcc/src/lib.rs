@@ -4,16 +4,16 @@
 #![doc(html_logo_url = "https://raw.githubusercontent.com/oovm/shape-rs/dev/projects/images/Trapezohedron.svg")]
 #![doc(html_favicon_url = "https://raw.githubusercontent.com/oovm/shape-rs/dev/projects/images/Trapezohedron.svg")]
 
-mod errors;
 mod cmds;
+mod errors;
 
-pub(crate) mod printer;
 pub(crate) mod optimizer;
+pub(crate) mod printer;
 
 pub(crate) mod runner;
 
+pub use crate::{
+    cmds::{build::BuildCommand, publish::PublishCommand, run::RunCommand, test::TestCommand, Valor, ValorCommands},
+    errors::{Error, Result},
+};
 use clap::{Parser, Subcommand};
-pub use crate::errors::{Error, Result};
-pub use crate::cmds::build::BuildCommand;
-pub use crate::cmds::run::RunCommand;
-pub use crate::cmds::{Valor, ValorCommands};

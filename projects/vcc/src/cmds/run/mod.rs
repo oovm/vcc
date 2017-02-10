@@ -1,6 +1,9 @@
 use clap::Parser;
 use nyar_error::NyarError;
 
+
+
+/// `valor run --debug`
 #[derive(Parser)]
 pub struct RunCommand {
     /// Running under debug mode
