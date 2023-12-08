@@ -1,7 +1,6 @@
+use crate::{optimizer::optimize_wasm_all, printer::print_wat_all};
 use clap::Parser;
 use nyar_error::NyarError;
-use crate::optimizer::optimize_wasm_all;
-use crate::printer::print_wat_all;
 
 /// `valor build --release`
 #[derive(Parser)]
@@ -22,7 +21,8 @@ impl BuildCommand {
         let current = std::env::current_dir()?;
         let source = current.join("target/debug/valkyrie");
         let target = current.join("target/release/valkyrie");
-        optimize_wasm_all(&source, &target)?;
+        let mut errors = vec![];
+        optimize_wasm_all(&source, &target, &mut errors)?;
         print_wat_all(&source)?;
         print_wat_all(&target)?;
         Ok(())
