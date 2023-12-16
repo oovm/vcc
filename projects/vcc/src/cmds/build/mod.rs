@@ -25,6 +25,9 @@ impl BuildCommand {
         optimize_wasm_all(&source, &target, &mut errors)?;
         print_wat_all(&source)?;
         print_wat_all(&target)?;
+        for e in errors {
+            eprintln!("{}", e);
+        }
         Ok(())
     }
 }

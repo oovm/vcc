@@ -15,14 +15,21 @@ pub fn run_wasm<P: AsRef<Path>>(wasm: P) -> wasmtime::Result<()> {
     let input = wasmtime::Module::from_file(&engine, wasm)?;
     let instance = linker.instantiate(&mut store, &input)?;
 
-    let hello = instance.get_typed_func::<(i32, i32), u32>(&mut store, "add_ab").expect("nothing");
-    let output = hello.call(&mut store, (i32::MAX, i32::MAX))?;
-    println!("{:#?}", output);
+    // instance.get_memory()
 
-    let hello = instance.get_func(&mut store, "add_ba").expect("nothing");
-    let input = vec![Val::F32(10)];
-    let mut output = vec![Val::I32(0)];
-    hello.call(&mut store, &input, &mut output)?;
-    println!("{:#?}", output);
+    // let hello = instance.get_typed_func::<(i32, i32), u32>(&mut store, "add_ab").expect("nothing");
+    // let output = hello.call(&mut store, (i32::MAX, i32::MAX))?;
+    // println!("{:#?}", output);
+
+    // let hello = instance.get_func(&mut store, "add_ba").expect("nothing");
+    // let input = vec![Val::F32(10)];
+    // let mut output = vec![Val::I32(0)];
+    // hello.call(&mut store, &input, &mut output)?;
+    // println!("{:#?}", output);
     Ok(())
+}
+
+#[test]
+fn test() {
+    run_wasm(r#"C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-wasm\target\release\valkyrie\hello.wasm"#).unwrap();
 }

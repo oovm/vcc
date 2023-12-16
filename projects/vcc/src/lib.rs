@@ -6,12 +6,13 @@
 
 mod cmds;
 mod errors;
-
 pub(crate) mod optimizer;
+mod pipeline;
 pub(crate) mod printer;
 
 pub(crate) mod runner;
 
+use crate::pipeline::Pipeline;
 pub use crate::{
     cmds::{build::BuildCommand, publish::PublishCommand, run::RunCommand, test::TestCommand, Valor, ValorCommands},
     errors::{Error, Result},

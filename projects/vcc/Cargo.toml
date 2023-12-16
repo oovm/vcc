@@ -18,6 +18,7 @@ nyar-error = "0.1.11"
 wasm-opt = "0.116.0"
 wasmprinter = "0.2.75"
 wasmtime-wasi = "15.0.1"
+js-component-bindgen = "0.14.0"
 
 [dependencies.wasmtime]
 version = "15.0.1"
