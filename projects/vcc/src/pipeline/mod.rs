@@ -1,13 +1,13 @@
 use crate::printer::print_wat;
-use nyar_error::NyarError;
+use nyar_error::{NyarError, Result};
 use std::{
-    fs::{create_dir_all, File},
+    fs::{copy, create_dir_all, File},
+    io::Write,
     ops::AddAssign,
     path::{Path, PathBuf},
     sync::Arc,
 };
 use wax::{Glob, LinkBehavior};
-
 pub struct Pipeline {
     name: Arc<str>,
     debug_folder: PathBuf,
@@ -16,7 +16,7 @@ pub struct Pipeline {
 }
 
 impl Pipeline {
-    pub fn new(name: Arc<str>, workspace: &Path) -> Result<Self, NyarError> {
+    pub fn new(name: Arc<str>, workspace: &Path) -> Result<Self> {
         let debug_folder = workspace.join("target/valkyrie/debug");
         create_dir_all(&debug_folder)?;
         let release_folder = workspace.join("target/valkyrie/release");
@@ -38,7 +38,12 @@ impl AddAssign<NyarError> for Pipeline {
 }
 
 impl Pipeline {
-    fn wasm_to_wast(&mut self, folder: &Path) -> Result<(), NyarError> {
+    pub fn run(&self) -> Result<()> {
+        self.run_optimizer()?;
+        Ok(())
+    }
+
+    fn wasm_to_wast(&mut self, folder: &Path) -> Result<()> {
         let glob = Glob::new("*.{wasm}").expect("Internal Error: illegal wasm extension");
         let walker = glob
             .walk_with_behavior(folder, LinkBehavior::ReadTarget)
@@ -66,11 +71,26 @@ impl Pipeline {
     fn debug_file(&self) -> PathBuf {
         self.debug_folder.join(format!("{}.wasm", self.name))
     }
+    fn release_file(&self) -> PathBuf {
+        self.release_folder.join(format!("{}.wasm", self.name))
+    }
+    fn run_optimizer(&self) -> Result<()> {
+        copy(self.debug_file(), self.release_file())?;
+
+        Ok(())
+    }
+}
+
+impl Pipeline {
+    fn run_js_binding(&self) -> Result<()> {
+        Ok(())
+    }
 }
 
 #[test]
 fn test() {
     let mut builder = Pipeline::new(Arc::from("valkyrie_wit"), &Path::new(env!("CARGO_MANIFEST_DIR"))).unwrap();
+    builder.run().unwrap();
 
     // let wit = read(out_dir.join("valkyrie_wit.wasm")).unwrap();
     // let out = transpile(&wit, TranspileOpts { name: "valkyrie_wit".to_string(), ..Default::default() }).unwrap();

@@ -12,9 +12,9 @@ pub(crate) mod printer;
 
 pub(crate) mod runner;
 
-use crate::pipeline::Pipeline;
 pub use crate::{
     cmds::{build::BuildCommand, publish::PublishCommand, run::RunCommand, test::TestCommand, Valor, ValorCommands},
     errors::{Error, Result},
+    pipeline::Pipeline,
 };
 use clap::{Parser, Subcommand};
