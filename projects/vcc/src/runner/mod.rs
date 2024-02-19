@@ -1,5 +1,5 @@
 use std::path::Path;
-use wasmtime::{Engine, Linker, Store, Val};
+use wasmtime::{Engine, Linker, Store};
 use wasmtime_wasi::WasiCtxBuilder;
 
 pub fn run_wasm<P: AsRef<Path>>(wasm: P) -> wasmtime::Result<()> {

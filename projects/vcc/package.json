@@ -2,6 +2,7 @@
     "private": true,
     "scripts": {
         "p": "cargo publish --allow-dirty",
-        "i": "cargo install --debug --path ."
+        "i": "cargo install --debug --path .",
+        "i:release": "cargo install --path ."
     }
 }

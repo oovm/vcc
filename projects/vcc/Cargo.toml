@@ -12,16 +12,16 @@ exclude = ["package.json", "tests/**"]
 
 
 [dependencies]
-clap = { version = "4.4.11", features = ["derive"] }
+clap = { version = "4.5.1", features = ["derive"] }
 wax = "0.6.0"
-nyar-error = "0.1.11"
+nyar-error = "0.1.12"
 wasm-opt = "0.116.0"
-wasmprinter = "0.2.75"
-wasmtime-wasi = "15.0.1"
-js-component-bindgen = "0.14.0"
+wasmprinter = "0.200.0"
+wasmtime-wasi = "17.0.1"
+js-component-bindgen = "1.0.0"
 
 [dependencies.wasmtime]
-version = "15.0.1"
+version = "17.0.1"
 features = ["component-model"]
 
 [dev-dependencies]
