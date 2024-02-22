@@ -2,6 +2,7 @@ use nyar_error::NyarError;
 use std::{fs::File, io::Write, path::Path};
 use wasmprinter::Printer;
 use wax::{Glob, LinkBehavior};
+
 pub fn print_wat_all(folder: &Path) -> Result<(), NyarError> {
     let glob = Glob::new("*.{wasm}").unwrap();
     for entry in glob.walk_with_behavior(folder, LinkBehavior::ReadTarget).not(["**/secret/**"]).unwrap() {
