@@ -1,41 +1,60 @@
-use std::path::Path;
-use wasmtime::{Config, Engine, Store};
-use wasmtime::component::{Component, Linker, ResourceTable};
+use wasmtime::{
+    component::{Component, Func, Instance, Linker, ResourceTable, Val},
+    AsContextMut, Config, Engine, Module, Store,
+};
 use wasmtime_wasi::preview2::{WasiCtx, WasiCtxBuilder, WasiView};
 
-#[tokio::main]
-async fn main() -> anyhow::Result<()> {
-    let mut config = Config::new();
-    config.async_support(true);
-    config.wasm_reference_types(true);
-    config.wasm_function_references(true);
-    config.wasm_component_model(true);
+pub struct WasiRunner {
+    engine: Engine,
+    store: Store<ContextView>,
+    linker: Linker<ContextView>,
+}
 
-    let engine = Engine::new(&config)?;
+impl Default for WasiRunner {
+    fn default() -> Self {
+        let mut config = Config::new();
+        config.wasm_reference_types(true);
+        config.wasm_function_references(true);
+        Self::new(config).unwrap()
+    }
+}
 
-    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("src/component.wat");
-    let bytes = std::fs::read(&path)?;
-    let component = Component::new(&engine, &bytes)?;
+impl WasiRunner {
+    pub fn new(mut config: Config) -> anyhow::Result<Self> {
+        config.async_support(true);
+        config.wasm_component_model(true);
+        let engine = Engine::new(&config)?;
+        let mut linker = Linker::<ContextView>::new(&engine);
+        linker.allow_shadowing(true);
+        wasmtime_wasi::preview2::command::add_to_linker(&mut linker)?;
+        let mut builder = WasiCtxBuilder::new();
+        builder.inherit_stderr();
+        let store = Store::new(&engine, ContextView::new(ResourceTable::default(), builder.build()));
+        Ok(Self { engine, linker, store })
+    }
 
-    let mut linker = Linker::<ContextView>::new(&engine);
-    linker.allow_shadowing(true);
-    wasmtime_wasi::preview2::command::add_to_linker(&mut linker)?;
+    pub async fn load_wast(mut self, wat: &str) -> anyhow::Result<WasiInstance> {
+        let component = Component::new(&self.engine, &wat.as_bytes())?;
+        let instance = self.linker.instantiate_async(&mut self.store, &component).await?;
+        Ok(WasiInstance { store: self.store, instance })
+    }
+}
 
-    let mut builder = WasiCtxBuilder::new();
-    builder.inherit_stderr();
+pub struct WasiInstance {
+    store: Store<ContextView>,
+    instance: Instance,
+}
 
-    let mut store = Store::new(&engine, ContextView::new(ResourceTable::default(), builder.build()));
-
-    let instance = linker.instantiate_async(&mut store, &component).await?;
-    let mut exports = instance.exports(&mut store);
-    let mut root = exports.root();
-
-
-    // let f_one = instance.get_typed_func::<(), (i64, )>(&mut store, "tuple1")?;
-    // let result = f_one.call_async(&mut store, ()).await?;
-    // println!("{:?}", result);
-
-    Ok(())
+impl WasiInstance {
+    pub async fn call_function(&mut self, name: &str, inputs: &[Val]) -> anyhow::Result<Vec<Val>> {
+        let f = match self.instance.get_func(&mut self.store, name) {
+            Some(s) => s,
+            None => Err(anyhow::anyhow!("Function not found: {}", name))?,
+        };
+        let mut result = vec![];
+        f.call_async(&mut self.store, inputs, &mut result).await?;
+        Ok(result)
+    }
 }
 
 pub struct ContextView {

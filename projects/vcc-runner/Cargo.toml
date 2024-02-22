@@ -1,20 +1,21 @@
 [package]
 name = "vcc-runner"
 version = "0.0.0"
-edition = "2021"
-license = "Apache-2.0 WITH LLVM-exception"
 categories = ["wasm"]
 keywords = ["webassembly", "wasm"]
 repository = "https://github.com/rylev/wepl"
+readme = "Readme.md"
+license = "MPL-2.0"
+edition = "2021"
+exclude = ["package.json", "tests/**"]
 
 [dependencies]
 anyhow = "1.0"
-
 wasmtime = { version = "18.0.1", features = ["component-model", "async"] }
 wasmtime-wasi = { version = "18.0.1", features = ["tokio", ] }
-wit-component = "0.200.0"
-wit-parser = "0.200.0"
-wasm-compose = "0.200.0"
 
 [dev-dependencies]
 tokio = { version = "1.36.0", features = ["macros"] }
+
+[features]
+wast = []
