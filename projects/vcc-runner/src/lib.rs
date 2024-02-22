@@ -1,6 +1,6 @@
 use wasmtime::{
-    component::{Component, Func, Instance, Linker, ResourceTable, Val},
-    AsContextMut, Config, Engine, Module, Store,
+    component::{Component, ComponentNamedList, Instance, Lift, Linker, Lower, ResourceTable, Val},
+    Config, Engine, Store,
 };
 use wasmtime_wasi::preview2::{WasiCtx, WasiCtxBuilder, WasiView};
 
@@ -46,14 +46,23 @@ pub struct WasiInstance {
 }
 
 impl WasiInstance {
-    pub async fn call_function(&mut self, name: &str, inputs: &[Val]) -> anyhow::Result<Vec<Val>> {
+    pub async fn call_function_dynamic(&mut self, name: &str, inputs: &[Val]) -> anyhow::Result<Vec<Val>> {
         let f = match self.instance.get_func(&mut self.store, name) {
             Some(s) => s,
             None => Err(anyhow::anyhow!("Function not found: {}", name))?,
         };
-        let mut result = vec![];
+        let results = f.results(&self.store).len();
+        let mut result = vec![Val::S32(0); results];
         f.call_async(&mut self.store, inputs, &mut result).await?;
         Ok(result)
+    }
+    pub async fn call_function<I, O>(&mut self, name: &str, inputs: I) -> anyhow::Result<O>
+        where
+            I: ComponentNamedList + Lower + Send + Sync,
+            O: ComponentNamedList + Lift + Send + Sync,
+    {
+        let f = self.instance.get_typed_func::<I, O>(&mut self.store, name)?;
+        Ok(f.call_async(&mut self.store, inputs).await?)
     }
 }
 

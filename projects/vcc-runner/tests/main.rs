@@ -9,13 +9,15 @@ fn ready() {
 #[tokio::test]
 async fn main() -> anyhow::Result<()> {
     let runner = WasiRunner::default();
-
     let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/component.wat");
     let bytes = std::fs::read_to_string(&path)?;
     let mut component = runner.load_wast(&bytes).await?;
-
-    let m = component.call_function("org:package/a-two@0.1.0", &[]).await?;
+    let m = component.call_function_dynamic("random-i32", &[]).await?;
     println!("{:?}", m);
+
+    // let m: (i32,) = component.call_function("random-i32", ()).await?;
+    // println!("{:?}", m);
+
     // let mut exports = instance.exports(&mut store);
     // let mut root = exports.root();
 
