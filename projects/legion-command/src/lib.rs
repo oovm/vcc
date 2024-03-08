@@ -1,11 +1,27 @@
-use serde::{Deserialize, Serialize};
+use std::ffi::OsString;
 
-pub use crate::workspace::Workspace;
+use clap::Parser;
 
-mod application;
-mod workspace;
+pub use crate::{
+    cmd_build::BuildCommand,
+    options::{ApplicationCommand, SharedOptions},
+};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct LegionConfig {
-    pub workspace: Workspace,
+mod cmd_build;
+mod options;
+
+/// Doc comment
+#[derive(Parser)]
+pub struct Application {
+    /// Doc comment
+    #[arg(long, short = 'C')]
+    directory: Option<OsString>,
+    #[command(subcommand)]
+    command: ApplicationCommand,
+}
+
+impl Application {
+    pub fn run(&self) {
+        self.command.run()
+    }
 }

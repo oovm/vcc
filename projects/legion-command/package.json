@@ -2,6 +2,7 @@
     "private": true,
     "scripts": {
         "u": "cargo upgrade",
+        "i": "cargo install --path . --debug --offline",
         "p": "cargo publish --allow-dirty"
     }
 }

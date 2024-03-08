@@ -16,8 +16,14 @@ serde-types = "0.1.1"
 toml = "0.8.10"
 json5 = "0.4.1"
 
+[[bin]]
+name = "vpm"
+path = "src/main.rs"
 
 
+[[bin]]
+name = "vpm-go"
+path = "src/main.rs"
 
 [dev-dependencies]
 
