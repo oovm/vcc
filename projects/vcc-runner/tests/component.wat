@@ -1,22 +1,38 @@
-(component
-    (import "wasi:random/random@0.2.0" (instance $wasi_random
-        (export "get-random-u64" (func (result u64)))
+(component $Root
+    (import "wasi:io/error@0.2.0" (instance $wasi:io/error@0.2.0
+        ;; class std::io::Error
+        (export "error" (type (sub resource)))
     ))
-    (core func $get_random_u64 (canon lower
-        (func $wasi_random "get-random-u64")
+    (alias export $wasi:io/error@0.2.0 "error" (type $io-error))
+
+    ;; variant std::io::StreamError
+    (type $stream-error (variant
+        (case "last-operation-failed" (own $io-error))
+        (case "closed")
     ))
-    (core module $Library
-        (import "wasi:random/random@0.2.0" "get-random-u64" (func $get_random_u64 (result i64)))
-        (func $main (export "random-i32")
-            (result i32)
-            (i32.wrap_i64 (call $get_random_u64))
+
+    (import "wasi:io/streams@0.2.0" (instance $wasi:io/streams@0.2.0
+        (export $output-stream "output-stream" (type (sub resource)))
+
+        (alias outer $Root $io-error (type $io-error))
+        (export $stream-error0 "stream-error" (type (eq $stream-error)))
+        (export $stream-error1 "alias0" (type (eq $stream-error)))
+
+        (export "[method]output-stream.blocking-write-and-flush"
+            ;; class std::io::OutputStream
+            ;; method blocking-write-and-flush(self) -> Result<(), std::io::Error>
+            (func (param "self" (borrow $output-stream)) (param "contents" (list u8)) (result (result (error $stream-error0))))
         )
-    )
-    (core instance $library (instantiate $Library
-        (with "wasi:random/random@0.2.0" (instance (export "get-random-u64" (func $get_random_u64))))
     ))
-    (func $random-i32 (export "random-i32")
-        (result s32)
-        (canon lift (core func $library "random-i32"))
-    )
+    (alias export $wasi:io/streams@0.2.0 "output-stream" (type $output-stream))
+    (alias export $wasi:io/streams@0.2.0 "alias0" (type $output-stream0))
+
+    (import "wasi:cli/stdout@0.2.0" (instance $wasi:cli/stdout@0.2.0
+        (alias outer $Root $output-stream (type $output-stream))
+        (export "get-stdout"
+            ;; class std::io::OutputStream
+            ;; static stdout() -> Self
+            (func (result (own $output-stream)))
+        )
+    ))
 )

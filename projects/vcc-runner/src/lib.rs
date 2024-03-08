@@ -57,9 +57,9 @@ impl WasiInstance {
         Ok(result)
     }
     pub async fn call_function<I, O>(&mut self, name: &str, inputs: I) -> anyhow::Result<O>
-        where
-            I: ComponentNamedList + Lower + Send + Sync,
-            O: ComponentNamedList + Lift + Send + Sync,
+    where
+        I: ComponentNamedList + Lower + Send + Sync,
+        O: ComponentNamedList + Lift + Send + Sync,
     {
         let f = self.instance.get_typed_func::<I, O>(&mut self.store, name)?;
         Ok(f.call_async(&mut self.store, inputs).await?)
