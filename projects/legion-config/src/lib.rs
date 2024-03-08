@@ -1,8 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-pub use crate::workspace::Workspace;
+pub use crate::{versions::PackageVersion, workspace::Workspace};
 
 mod application;
+mod versions;
 mod workspace;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

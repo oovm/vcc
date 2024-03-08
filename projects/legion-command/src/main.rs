@@ -1,6 +1,6 @@
 use clap::Parser;
 
-use vpm::Application;
+use vpp::Application;
 
 fn main() {
     _ = Application::parse().run();

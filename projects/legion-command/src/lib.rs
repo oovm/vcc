@@ -8,10 +8,11 @@ pub use crate::{
 };
 
 mod cmd_build;
+mod cmd_package_manager;
 mod options;
 
-/// Doc comment
 #[derive(Parser)]
+#[command(version, about, long_about = include_str!("readme.md"))]
 pub struct Application {
     /// Doc comment
     #[arg(long, short = 'C')]

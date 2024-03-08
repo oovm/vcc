@@ -5,7 +5,7 @@ authors = ["192607617@qq.com"]
 edition = "2021"
 description = "High level intermediate representation for Nyar"
 repository = "https://github.com/nyar-lang/NyarNative"
-documentation = "https://docs.rs/legion-core"
+documentation = "https://docs.rs/legion-config"
 license = "MPL-2.0"
 
 [dependencies]
@@ -15,9 +15,7 @@ serde_json = "1.0.91"
 serde-types = "0.1.1"
 toml = "0.8.10"
 json5 = "0.4.1"
-
-
-
+semver = "1.0.22"
 
 [dev-dependencies]
 
