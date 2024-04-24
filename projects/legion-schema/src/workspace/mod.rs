@@ -1,12 +1,8 @@
-use crate::{examples::*, AuthorsInfo, DependencyInfo, LegionPackageLicense, LegionWorkspaceLicense, VersionInfo};
+use crate::{examples::*, AuthorsInfo, DependencyInfo, LegionWorkspaceLicense, VersionInfo};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    str::FromStr,
-};
+use std::collections::{BTreeMap, BTreeSet};
 use url::Url;
-use yearly_version::Version;
 
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "kebab-case")]

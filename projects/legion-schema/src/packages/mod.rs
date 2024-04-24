@@ -1,10 +1,7 @@
 use crate::{examples::*, AuthorsInfo, CategoryType, DependencyInfo, LegionPackageLicense, VersionInfo};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    str::FromStr,
-};
+use std::collections::{BTreeMap, BTreeSet};
 use url::Url;
 use yearly_version::Version;
 
