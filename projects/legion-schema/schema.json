@@ -59,7 +59,7 @@
             "minLength": 0
         },
         "document": {
-            "default": "",
+            "default": "https://github.com/",
             "type": "string",
             "format": "uri"
         },
@@ -81,7 +81,7 @@
             }
         },
         "homepage": {
-            "default": "",
+            "default": "https://github.com/",
             "type": "string",
             "format": "uri"
         },
@@ -125,7 +125,7 @@
             "type": "boolean"
         },
         "repository": {
-            "default": "",
+            "default": "https://github.com/",
             "type": "string",
             "format": "uri"
         },
@@ -190,9 +190,15 @@
         "GitDependency": {
             "type": "object",
             "required": [
+                "git",
                 "version"
             ],
             "properties": {
+                "branch": {
+                    "description": "The git branch of the dependency",
+                    "default": "",
+                    "type": "string"
+                },
                 "default_features": {
                     "default": false,
                     "type": "boolean"
@@ -208,12 +214,26 @@
                     }
                 },
                 "git": {
+                    "description": "The git url of the dependency",
                     "type": "string",
-                    "nullable": true
+                    "format": "uri"
                 },
                 "optional": {
                     "default": false,
                     "type": "boolean"
+                },
+                "rev": {
+                    "description": "The git revision of the dependency",
+                    "default": null,
+                    "type": "integer",
+                    "format": "uint64",
+                    "minimum": 0.0,
+                    "nullable": true
+                },
+                "tag": {
+                    "description": "The git tag of the dependency",
+                    "default": "",
+                    "type": "string"
                 },
                 "version": {
                     "$ref": "#/definitions/VersionRequest"
@@ -393,6 +413,7 @@
         "LocalDependency": {
             "type": "object",
             "required": [
+                "path",
                 "version"
             ],
             "properties": {
@@ -415,8 +436,7 @@
                     "type": "boolean"
                 },
                 "path": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                 },
                 "version": {
                     "$ref": "#/definitions/VersionRequest"

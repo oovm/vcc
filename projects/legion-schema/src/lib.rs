@@ -1,7 +1,7 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
-
+use std::{collections::BTreeMap, str::FromStr};
+use url::Url;
 mod authors;
 mod dependencies;
 mod inherits;
@@ -52,18 +52,14 @@ pub struct LegionConfig {
     /// The name of authors
     #[serde(default)]
     pub authors: AuthorsInfo,
-    #[serde(default)]
-    #[schemars(url)]
-    // #[schemars(default = "https://github.com/")]
-    pub homepage: String,
-    #[serde(default)]
-    #[schemars(url)]
-    // #[schemars(default = "https://github.com/")]
-    pub repository: String,
-    #[serde(default)]
-    #[schemars(url)]
-    // #[schemars(default = "https://docs.rs/")]
-    pub document: String,
+    #[serde(default = "default_homepage")]
+    pub homepage: Url,
+
+    #[serde(default = "default_repository")]
+    pub repository: Url,
+
+    #[serde(default = "default_document")]
+    pub document: Url,
     /// # workspace | a.b.c.d
     /// The license used by the current project
     pub license: LicenseInfo,
@@ -80,4 +76,15 @@ pub struct LegionConfig {
     pub dependency_build: BTreeMap<String, DependencyInfo>,
     #[serde(default)]
     pub features: BTreeMap<String, Vec<String>>,
+}
+
+fn default_homepage() -> Url {
+    Url::from_str("https://github.com").unwrap()
+}
+fn default_repository() -> Url {
+    Url::from_str("https://github.com").unwrap()
+}
+
+fn default_document() -> Url {
+    Url::from_str("https://github.com").unwrap()
 }

@@ -1,6 +1,7 @@
 use crate::InheritConfig;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize)]
 
@@ -36,7 +37,7 @@ impl schemars::JsonSchema for LicenseInfo {
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct CustomLicense {
     /// Local path to the license file
-    file: String,
+    pub file: PathBuf,
 }
 
 /// A predefined [SPDX](https://spdx.org/licenses) license
