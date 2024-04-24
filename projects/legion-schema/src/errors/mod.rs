@@ -7,8 +7,15 @@ pub type Result<T, E = LegionConfigError> = std::result::Result<T, E>;
 
 #[derive(Debug)]
 pub enum LegionConfigError {
-    NotInheritable { field: &'static str },
-    MissingField { field: &'static str },
+    /// The field is not inheritable
+    NotInheritable {
+        /// The field name
+        field: &'static str,
+    },
+    MissingField {
+        /// The field name
+        field: &'static str,
+    },
 }
 
 impl Display for LegionConfigError {

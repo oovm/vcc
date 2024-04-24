@@ -1,13 +1,17 @@
 use super::*;
 
 #[derive(Debug, Serialize, Deserialize, JsonSchema)]
+#[schemars(untagged)]
 pub enum LegionPackageLicense {
-    Inherit(InheritConfig),
+    /// inherit from workspace
+    #[serde(rename = "workspace")]
+    Workspace,
     Single(LicenseType),
     Custom(CustomLicense),
 }
 
 #[derive(Debug, Serialize, Deserialize, JsonSchema)]
+#[schemars(untagged)]
 pub enum LegionWorkspaceLicense {
     Single(LicenseType),
     Custom(CustomLicense),

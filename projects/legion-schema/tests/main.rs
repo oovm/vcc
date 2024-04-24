@@ -28,6 +28,7 @@ fn json_schema<S>(path: impl AsRef<Path>)
 where
     S: JsonSchema,
 {
+    let path = path.as_ref();
     let settings = SchemaSettings::draft07().with(|s| {
         s.option_nullable = true;
         s.option_add_null_type = false;
@@ -37,5 +38,4 @@ where
     let mut file = std::fs::File::create(path).unwrap();
     let mut ser = Serializer::with_formatter(&mut file, PrettyFormatter::with_indent(b"    "));
     schema.serialize(&mut ser).unwrap();
-    serde_json::to_writer_pretty(&mut file, &schema).unwrap()
 }
