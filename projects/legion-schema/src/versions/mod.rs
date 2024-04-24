@@ -1,4 +1,4 @@
-use crate::InheritConfig;
+use crate::{InheritConfig, LegionConfigError, LegionPackageSetting};
 use schemars::{
     gen::SchemaGenerator,
     schema::{Schema, SchemaObject, SubschemaValidation},
@@ -6,6 +6,7 @@ use schemars::{
 };
 use serde::{Deserialize, Serialize};
 
+use crate::Result;
 use std::borrow::Cow;
 use yearly_version::Version;
 
@@ -30,5 +31,19 @@ impl JsonSchema for VersionInfo {
             })),
             ..Default::default()
         })
+    }
+}
+impl VersionInfo {
+    pub fn seek(&self, ws: &Option<LegionPackageSetting>) -> Result<Version> {
+        match self {
+            Self::Inherit(InheritConfig::Workspace) => match ws {
+                Some(s) => match &s.version {
+                    Self::Inherit(_) => Err(LegionConfigError::NotInheritable { field: "workspace.version" }),
+                    Self::Yearly(y) => Ok(*y),
+                },
+                None => Err(LegionConfigError::MissingField { field: "workspace.version" }),
+            },
+            Self::Yearly(y) => Ok(*y),
+        }
     }
 }

@@ -1,47 +1,26 @@
-use crate::InheritConfig;
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
-use std::path::PathBuf;
+use super::*;
 
-#[derive(Serialize, Deserialize)]
-
-pub enum LicenseInfo {
+#[derive(Debug, Serialize, Deserialize, JsonSchema)]
+pub enum LegionPackageLicense {
     Inherit(InheritConfig),
     Single(LicenseType),
     Custom(CustomLicense),
 }
 
-#[automatically_derived]
-impl schemars::JsonSchema for LicenseInfo {
-    fn schema_name() -> String {
-        "LicenseInfo".to_owned()
-    }
-    fn schema_id() -> std::borrow::Cow<'static, str> {
-        std::borrow::Cow::Borrowed(concat!(module_path!(), "::", "LicenseInfo"))
-    }
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        schemars::schema::Schema::Object(schemars::schema::SchemaObject {
-            subschemas: Some(Box::new(schemars::schema::SubschemaValidation {
-                one_of: Some(vec![
-                    gen.subschema_for::<InheritConfig>(),
-                    gen.subschema_for::<LicenseType>(),
-                    gen.subschema_for::<CustomLicense>(),
-                ]),
-                ..Default::default()
-            })),
-            ..Default::default()
-        })
-    }
+#[derive(Debug, Serialize, Deserialize, JsonSchema)]
+pub enum LegionWorkspaceLicense {
+    Single(LicenseType),
+    Custom(CustomLicense),
 }
 
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Debug, Serialize, Deserialize, JsonSchema)]
 pub struct CustomLicense {
     /// Local path to the license file
     pub file: PathBuf,
 }
 
 /// A predefined [SPDX](https://spdx.org/licenses) license
-#[derive(Default, Serialize, Deserialize, JsonSchema)]
+#[derive(Default, Debug, Serialize, Deserialize, JsonSchema)]
 pub enum LicenseType {
     /// [MIT License](https://spdx.org/licenses/MIT.html)
     #[default]
@@ -106,7 +85,7 @@ pub enum LicenseType {
     Unlicense,
 }
 
-impl Default for LicenseInfo {
+impl Default for LegionPackageLicense {
     fn default() -> Self {
         Self::Single(LicenseType::default())
     }
