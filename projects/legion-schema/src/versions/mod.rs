@@ -1,13 +1,12 @@
 use crate::InheritConfig;
 use schemars::{
-    JsonSchema,
-    _private::{apply_metadata, MaybeSerializeWrapper},
     gen::SchemaGenerator,
-    schema::{Metadata, Schema, SchemaObject, SubschemaValidation},
+    schema::{Schema, SchemaObject, SubschemaValidation},
+    JsonSchema,
 };
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
-use std::{borrow::Cow, str::FromStr};
+
+use std::borrow::Cow;
 use yearly_version::Version;
 
 #[derive(Serialize, Deserialize)]

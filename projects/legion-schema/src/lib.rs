@@ -1,4 +1,4 @@
-use schemars::{gen::SchemaSettings, JsonSchema};
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -75,24 +75,9 @@ pub struct LegionConfig {
     #[serde(default)]
     pub dependency: BTreeMap<String, DependencyInfo>,
     #[serde(default)]
-    pub dependency_development: BTreeMap<String, DependencyInfo>,
+    pub dependency_debug: BTreeMap<String, DependencyInfo>,
     #[serde(default)]
     pub dependency_build: BTreeMap<String, DependencyInfo>,
     #[serde(default)]
     pub features: BTreeMap<String, Vec<String>>,
-}
-
-fn default_version() -> String {
-    "0.0.0.0".to_string()
-}
-
-#[test]
-fn test() {
-    let settings = SchemaSettings::draft07().with(|s| {
-        s.option_nullable = true;
-        s.option_add_null_type = false;
-    });
-    let gen = settings.into_generator();
-    let schema = gen.into_root_schema_for::<LegionConfig>();
-    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }
