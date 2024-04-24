@@ -1,7 +1,7 @@
-use crate::{examples::*, AuthorsInfo, DependencyInfo, LegionWorkspaceLicense, VersionInfo};
+use crate::{examples::*, DependencyInfo, LegionWorkspaceAuthors, LegionWorkspaceLicense, LegionWorkspaceVersion};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 use url::Url;
 
 #[derive(Serialize, Deserialize, JsonSchema)]
@@ -16,29 +16,15 @@ pub struct LegionWorkspaceSetting {
     ///
     /// Inherit from workspace or use four-digit version number
     #[schemars(required)]
-    pub(crate) version: VersionInfo,
+    pub(crate) version: LegionWorkspaceVersion,
     /// # bool
     ///
     /// Weather to publish this project, set  [`false`] to prevent accidental publishing
     #[serde(default)]
     pub(crate) publish: bool,
-    /// # 0 <= string <= 144
-    /// Briefly introduce this project in one sentence
-    #[serde(default)]
-    #[schemars(length(min = 0, max = 144))]
-    pub(crate) description: String,
-    /// # 0 <= keyword <= 9
-    #[serde(default)]
-    #[schemars(length(min = 0, max = 9))]
-    // #[schemars(unique_items)]
-    pub(crate) keywords: Vec<String>,
-    /// # 0 <= category <= 5
-    #[serde(default)]
-    #[schemars(length(min = 0, max = 5))]
-    pub(crate) categories: BTreeSet<crate::CategoryType>,
     /// The name of authors
     #[serde(default)]
-    pub(crate) authors: AuthorsInfo,
+    pub(crate) authors: LegionWorkspaceAuthors,
     #[schemars(example = "homepage_example")]
     pub(crate) homepage: Option<Url>,
     #[schemars(example = "repository_example")]
@@ -63,6 +49,4 @@ pub struct LegionWorkspaceSetting {
     pub(crate) scripts: BTreeMap<String, String>,
     #[serde(default)]
     pub(crate) default_script: Option<String>,
-    #[serde(default)]
-    pub(crate) features: BTreeMap<String, Vec<String>>,
 }

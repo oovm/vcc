@@ -15,20 +15,9 @@
             },
             "allOf": [
                 {
-                    "$ref": "#/definitions/AuthorsInfo"
+                    "$ref": "#/definitions/LegionWorkspaceAuthors"
                 }
             ]
-        },
-        "categories": {
-            "title": "0 <= category <= 5",
-            "default": [],
-            "type": "array",
-            "items": {
-                "$ref": "#/definitions/CategoryType"
-            },
-            "maxItems": 5,
-            "minItems": 0,
-            "uniqueItems": true
         },
         "default-script": {
             "default": null,
@@ -56,14 +45,6 @@
                 "$ref": "#/definitions/DependencyInfo"
             }
         },
-        "description": {
-            "title": "0 <= string <= 144",
-            "description": "Briefly introduce this project in one sentence",
-            "default": "",
-            "type": "string",
-            "maxLength": 144,
-            "minLength": 0
-        },
         "document": {
             "examples": [
                 [
@@ -79,16 +60,6 @@
             "type": "array",
             "items": {
                 "type": "string"
-            }
-        },
-        "features": {
-            "default": {},
-            "type": "object",
-            "additionalProperties": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
             }
         },
         "homepage": {
@@ -107,16 +78,6 @@
             "items": {
                 "type": "string"
             }
-        },
-        "keywords": {
-            "title": "0 <= keyword <= 9",
-            "default": [],
-            "type": "array",
-            "items": {
-                "type": "string"
-            },
-            "maxItems": 9,
-            "minItems": 0
         },
         "license": {
             "title": "workspace | a.b.c.d",
@@ -160,10 +121,7 @@
         "version": {
             "title": "workspace | a.b.c.d",
             "description": "Inherit from workspace or use four-digit version number",
-            "oneOf": [
-                {
-                    "$ref": "#/definitions/InheritConfig"
-                },
+            "anyOf": [
                 {
                     "$ref": "#/definitions/Version"
                 }
@@ -171,35 +129,6 @@
         }
     },
     "definitions": {
-        "AuthorsInfo": {
-            "anyOf": [
-                {
-                    "$ref": "#/definitions/InheritConfig"
-                },
-                {
-                    "type": "string"
-                },
-                {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            ]
-        },
-        "CategoryType": {
-            "description": "The predefined category type",
-            "type": "string",
-            "enum": [
-                "compiler",
-                "game",
-                "graphics",
-                "network",
-                "audio",
-                "database",
-                "filesystem"
-            ]
-        },
         "CustomLicense": {
             "type": "object",
             "required": [
@@ -297,6 +226,19 @@
                     "enum": [
                         "workspace"
                     ]
+                }
+            ]
+        },
+        "LegionWorkspaceAuthors": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             ]
         },

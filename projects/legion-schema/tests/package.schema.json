@@ -15,7 +15,7 @@
             },
             "allOf": [
                 {
-                    "$ref": "#/definitions/AuthorsInfo"
+                    "$ref": "#/definitions/LegionPackageAuthors"
                 }
             ]
         },
@@ -160,7 +160,7 @@
         "version": {
             "title": "workspace | a.b.c.d",
             "description": "Inherit from workspace or use four-digit version number",
-            "oneOf": [
+            "anyOf": [
                 {
                     "$ref": "#/definitions/InheritConfig"
                 },
@@ -171,22 +171,6 @@
         }
     },
     "definitions": {
-        "AuthorsInfo": {
-            "anyOf": [
-                {
-                    "$ref": "#/definitions/InheritConfig"
-                },
-                {
-                    "type": "string"
-                },
-                {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            ]
-        },
         "CategoryType": {
             "description": "The predefined category type",
             "type": "string",
@@ -300,11 +284,26 @@
                 }
             ]
         },
+        "LegionPackageAuthors": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/InheritConfig"
+                },
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
         "LegionPackageLicense": {
             "anyOf": [
                 {
-                    "description": "inherit from workspace",
-                    "type": "null"
+                    "$ref": "#/definitions/InheritConfig"
                 },
                 {
                     "$ref": "#/definitions/LicenseType"

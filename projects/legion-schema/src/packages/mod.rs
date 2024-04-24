@@ -1,4 +1,7 @@
-use crate::{examples::*, AuthorsInfo, CategoryType, DependencyInfo, LegionPackageLicense, VersionInfo};
+use crate::{
+    examples::*, CategoryType, DependencyInfo, LegionPackageAuthors, LegionPackageLicense, LegionPackageVersion,
+    LegionWorkspaceSetting, Result,
+};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
@@ -17,7 +20,7 @@ pub struct LegionPackageSetting {
     ///
     /// Inherit from workspace or use four-digit version number
     #[schemars(required)]
-    pub(crate) version: VersionInfo,
+    pub(crate) version: LegionPackageVersion,
     /// # bool
     ///
     /// Weather to publish this project, set  [`false`] to prevent accidental publishing
@@ -39,7 +42,7 @@ pub struct LegionPackageSetting {
     pub(crate) categories: BTreeSet<CategoryType>,
     /// The name of authors
     #[serde(default)]
-    pub(crate) authors: AuthorsInfo,
+    pub(crate) authors: LegionPackageAuthors,
     #[schemars(example = "homepage_example")]
     pub(crate) homepage: Option<Url>,
     #[schemars(example = "repository_example")]
@@ -74,11 +77,11 @@ impl LegionPackageSetting {
         self.name.as_str()
     }
     /// Get the version of current package
-    pub fn version(&self, ws: &Option<LegionPackageSetting>) -> crate::Result<Version> {
+    pub fn version(&self, ws: &Option<LegionWorkspaceSetting>) -> Result<Version> {
         self.version.seek(ws)
     }
     /// Get the authors of current package
-    pub fn authors(&self, ws: &Option<LegionPackageSetting>) -> crate::Result<Vec<String>> {
+    pub fn authors(&self, ws: &Option<LegionWorkspaceSetting>) -> Result<Vec<String>> {
         self.authors.seek(ws)
     }
 }

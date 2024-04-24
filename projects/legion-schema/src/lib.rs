@@ -1,21 +1,20 @@
-mod authors;
 mod definitions;
 mod dependencies;
 mod errors;
 pub(crate) mod examples;
 mod inherits;
-mod versions;
+
 pub use crate::{
-    authors::AuthorsInfo,
     definitions::{
+        authors::{LegionPackageAuthors, LegionWorkspaceAuthors},
         category::CategoryType,
         license::{LegionPackageLicense, LegionWorkspaceLicense, LicenseType},
+        versions::{LegionPackageVersion, LegionWorkspaceVersion},
     },
     dependencies::{DependencyInfo, DependencyInfoExtra},
     errors::{LegionConfigError, Result},
     inherits::InheritConfig,
     packages::LegionPackageSetting,
-    versions::VersionInfo,
     workspace::LegionWorkspaceSetting,
 };
 
