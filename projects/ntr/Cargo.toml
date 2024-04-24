@@ -1,0 +1,37 @@
+[package]
+name = "ntr"
+version = "0.0.2"
+authors = ["Aster <192607617@qq.com>"]
+description = "Nyar Terminal Runtime"
+repository = "https://github.com/oovm/vcc"
+documentation = "https://docs.rs/vcc"
+readme = "readme.md"
+license = "MPL-2.0"
+edition = "2021"
+exclude = ["package.json", "tests/**"]
+
+
+[dependencies]
+clap = { version = "4.5.1", features = ["derive"] }
+wax = "0.6.0"
+nyar-error = "0.1.12"
+wasm-opt = "0.116.0"
+wasmprinter = "0.200.0"
+wasmtime-wasi = "18.0.1"
+js-component-bindgen = "1.0.0"
+
+[dependencies.wasmtime]
+version = "18.0.1"
+features = ["component-model"]
+
+[dev-dependencies]
+
+[[bin]]
+name = "ntr"
+path = "src/main.rs"
+
+[features]
+default = []
+
+[package.metadata.docs.rs]
+all-features = true

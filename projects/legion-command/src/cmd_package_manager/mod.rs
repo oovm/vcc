@@ -2,8 +2,7 @@ use std::path::PathBuf;
 
 use clap::Args;
 
-use semver::{Error, VersionReq};
-use url::Url;
+use legion_config::{PackageVersion, Url};
 
 use crate::options::SharedOptions;
 

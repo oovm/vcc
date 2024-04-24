@@ -3,8 +3,8 @@ use std::io::ErrorKind;
 use clap::{Args, Subcommand, ValueEnum};
 
 use crate::{
-    BuildCommand,
     cmd_package_manager::{AddCommand, RemoveCommand, UpdateCommand},
+    BuildCommand,
 };
 
 /// Doc comment

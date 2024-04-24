@@ -1,0 +1,40 @@
+[workspace]
+
+[workspace.dependencies]
+version = "0.1.0"
+
+
+[package]
+name = "std"
+version = "0.0.0"
+publish = false
+summary = "The standard function library of the Valkyrie language"
+details = "readme.md"
+authors = ["Aster <192607617@qq.com>"]
+repository = "https://github.com/oovm/XCell"
+documentation = "https://docs.rs/xcell-types"
+edition = "2000"
+license = "MPL-2.0"
+
+[dependencies]
+# import a dependency from the central repository
+version = "0.2.0"
+# import a dependency from the workspace configuration
+inherit = true
+# import a dependency from the workspace configuration and override some settings
+override = { workspace = true, features = ["select"] }
+
+[dependencies-debug]
+
+[dependencies-build]
+
+
+[dependencies.named]
+workspace = false
+version = "0.1.0"
+
+
+
+
+[features]
+default = []
