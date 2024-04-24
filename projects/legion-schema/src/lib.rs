@@ -3,8 +3,12 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 mod authors;
+mod licenses;
 
-pub use crate::authors::AuthorsInfo;
+pub use crate::{
+    authors::AuthorsInfo,
+    licenses::{LicenseInfo, LicenseType},
+};
 
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct LegionConfig {
@@ -64,8 +68,7 @@ pub struct LegionConfig {
     // #[schemars(default = "https://docs.rs/")]
     pub document: String,
 
-    // #[schemars(enumDesc = "one of ")]
-    // #[schemars(default = "MIT")]
+    #[serde(default)]
     pub license: LicenseInfo,
 
     #[serde(default)]
@@ -110,23 +113,6 @@ pub struct DependencyInfoExtra {
     version: String,
     #[serde(default)]
     pub features: BTreeMap<String, Vec<String>>,
-}
-
-#[derive(Serialize, Deserialize, JsonSchema)]
-#[schemars(untagged)]
-pub enum LicenseInfo {
-    Single(LicenseType),
-    Custom { file: String },
-}
-
-// #[derive(schemars::JsonSchema)]
-pub enum LicenseType {
-    /// The kind is one!
-    One,
-    /// The kind is two!
-    Two,
-    /// The kind is not three!
-    NotThree,
 }
 
 #[test]
