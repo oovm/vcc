@@ -6,27 +6,28 @@ mod authors;
 mod dependencies;
 mod inherits;
 mod licenses;
-
+mod versions;
 pub use crate::{
     authors::AuthorsInfo,
     dependencies::{DependencyInfo, DependencyInfoExtra},
     inherits::InheritConfig,
     licenses::{LicenseInfo, LicenseType},
+    versions::VersionInfo,
 };
 
 #[derive(Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "kebab-case")]
 pub struct LegionConfig {
     /// # [0-9a-zA-Z_-]+
     /// name of the package or workspace
     #[schemars(length(min = 1))]
-    #[schemars(regex(pattern = r"[0-9a-zA-Z_-]+"))]
+    #[schemars(regex(pattern = r"[0-9a-zA-Z-]+"))]
     pub name: String,
     /// # workspace | a.b.c.d
     ///
     /// Inherit from workspace or use four-digit version number
-    #[schemars(default = "default_version")]
-    #[schemars(regex(pattern = r"workspace|[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"))]
-    pub version: String,
+    #[schemars(required)]
+    pub version: VersionInfo,
     /// # bool
     ///
     /// Weather to publish this project, set  [`false`] to prevent accidental publishing

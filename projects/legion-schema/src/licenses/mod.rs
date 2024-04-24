@@ -2,15 +2,41 @@ use crate::InheritConfig;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, JsonSchema)]
-#[schemars(untagged)]
+#[derive(Serialize, Deserialize)]
+
 pub enum LicenseInfo {
     Inherit(InheritConfig),
     Single(LicenseType),
-    Custom {
-        /// Local path to the license file
-        file: String,
-    },
+    Custom(CustomLicense),
+}
+
+#[automatically_derived]
+impl schemars::JsonSchema for LicenseInfo {
+    fn schema_name() -> String {
+        "LicenseInfo".to_owned()
+    }
+    fn schema_id() -> std::borrow::Cow<'static, str> {
+        std::borrow::Cow::Borrowed(concat!(module_path!(), "::", "LicenseInfo"))
+    }
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        schemars::schema::Schema::Object(schemars::schema::SchemaObject {
+            subschemas: Some(Box::new(schemars::schema::SubschemaValidation {
+                one_of: Some(vec![
+                    gen.subschema_for::<InheritConfig>(),
+                    gen.subschema_for::<LicenseType>(),
+                    gen.subschema_for::<CustomLicense>(),
+                ]),
+                ..Default::default()
+            })),
+            ..Default::default()
+        })
+    }
+}
+
+#[derive(Serialize, Deserialize, JsonSchema)]
+pub struct CustomLicense {
+    /// Local path to the license file
+    file: String,
 }
 
 /// A predefined [SPDX](https://spdx.org/licenses) license

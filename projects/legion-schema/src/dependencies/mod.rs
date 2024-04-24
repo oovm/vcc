@@ -2,12 +2,13 @@ use crate::InheritConfig;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+use yearly_version::{Version, VersionRequest};
 
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[schemars(untagged)]
 pub enum DependencyInfo {
     Inherit(InheritConfig),
-    Version(String),
+    Version(VersionRequest),
     Local {
         path: Option<String>,
         #[serde(flatten)]
@@ -21,8 +22,11 @@ pub enum DependencyInfo {
 }
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct DependencyInfoExtra {
-    // #[schemars(pattern = "^\\d{4}\\.\\d+\\.\\*$")]
-    version: String,
+    pub version: VersionRequest,
+    #[serde(default)]
+    pub optional: bool,
+    #[serde(default)]
+    pub default_features: bool,
     #[serde(default)]
     pub features: BTreeMap<String, Vec<String>>,
 }
