@@ -20,7 +20,7 @@ pub struct LegionWorkspaceSetting {
     /// # bool
     ///
     /// Weather to publish this project, set  [`false`] to prevent accidental publishing
-    #[serde(default)]
+    #[serde(default = "workspace_publish")]
     pub(crate) publish: bool,
     /// The name of authors
     #[serde(default)]
@@ -34,10 +34,15 @@ pub struct LegionWorkspaceSetting {
     /// # workspace | a.b.c.d
     /// The license used by the current project
     pub(crate) license: LegionWorkspaceLicense,
+    /// # glob[]
+    ///
+    /// Publish with these files, works after exclude
     #[serde(default)]
     pub(crate) include: Vec<String>,
+    /// # glob[]
+    ///
+    /// Don't publish these files
     #[serde(default)]
-    // #[schemars(description = "works after include")]
     pub(crate) exclude: Vec<String>,
     #[serde(default)]
     pub(crate) dependency: BTreeMap<String, DependencyInfo>,
@@ -50,3 +55,5 @@ pub struct LegionWorkspaceSetting {
     #[serde(default)]
     pub(crate) default_script: Option<String>,
 }
+
+pub struct GlobPattern {}

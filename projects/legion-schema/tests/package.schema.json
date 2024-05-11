@@ -116,7 +116,8 @@
                 "type": "string"
             },
             "maxItems": 9,
-            "minItems": 0
+            "minItems": 0,
+            "uniqueItems": true
         },
         "license": {
             "title": "workspace | a.b.c.d",
@@ -135,10 +136,10 @@
             "pattern": "[0-9a-zA-Z-]+"
         },
         "publish": {
-            "title": "bool",
+            "title": "bool?",
             "description": "Weather to publish this project, set  [`false`] to prevent accidental publishing",
-            "default": false,
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
         },
         "repository": {
             "examples": [

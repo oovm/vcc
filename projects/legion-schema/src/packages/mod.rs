@@ -21,11 +21,10 @@ pub struct LegionPackageSetting {
     /// Inherit from workspace or use four-digit version number
     #[schemars(required)]
     pub(crate) version: LegionPackageVersion,
-    /// # bool
+    /// # bool?
     ///
     /// Weather to publish this project, set  [`false`] to prevent accidental publishing
-    #[serde(default)]
-    pub(crate) publish: bool,
+    pub(crate) publish: Option<bool>,
     /// # 0 <= string <= 144
     /// Briefly introduce this project in one sentence
     #[serde(default)]
@@ -34,8 +33,7 @@ pub struct LegionPackageSetting {
     /// # 0 <= keyword <= 9
     #[serde(default)]
     #[schemars(length(min = 0, max = 9))]
-    // #[schemars(unique_items)]
-    pub(crate) keywords: Vec<String>,
+    pub(crate) keywords: BTreeSet<String>,
     /// # 0 <= category <= 5
     #[serde(default)]
     #[schemars(length(min = 0, max = 5))]

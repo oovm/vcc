@@ -98,7 +98,7 @@
         "publish": {
             "title": "bool",
             "description": "Weather to publish this project, set  [`false`] to prevent accidental publishing",
-            "default": false,
+            "default": true,
             "type": "boolean"
         },
         "repository": {
