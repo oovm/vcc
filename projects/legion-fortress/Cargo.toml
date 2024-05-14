@@ -1,0 +1,22 @@
+[package]
+name = "legion-fortress"
+version = "0.0.0"
+authors = ["192607617@qq.com"]
+edition = "2021"
+description = "High level intermediate representation for Nyar"
+repository = "https://github.com/nyar-lang/NyarNative"
+documentation = "https://docs.rs/legion-fortress"
+license = "MPL-2.0"
+
+[dependencies]
+dirs = "5.0.1"
+
+
+[dependencies.legion-error]
+path = "../legion-error"
+version = "0.0.0"
+
+[dev-dependencies]
+
+[features]
+default = []
