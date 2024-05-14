@@ -1,15 +1,18 @@
 [package]
 name = "vpp"
-version = "0.0.1"
+version = "0.0.4"
 authors = ["192607617@qq.com"]
 edition = "2021"
-description = "Valkyie Package Portal"
+description = "Legion Package Manager for Valkyie Language"
 repository = "https://github.com/nyar-lang/NyarNative"
 documentation = "https://docs.rs/legion-core"
 license = "MPL-2.0"
 
 [dependencies]
 clap = { version = "4.5.2", features = ["derive", "unicode", "error-context"] }
+reqwest = { version = "0.12.4", features = ["json", "stream", "socks"] }
+#warg-protocol = "0.6.0"
+warg-client = "0.6.0"
 
 [dependencies.legion-config]
 version = "0.0.*"
@@ -19,3 +22,8 @@ path = "../legion-config"
 
 [features]
 default = []
+
+[package.metadata.component]
+package = "valkyrie:legion"
+
+[package.metadata.component.dependencies]

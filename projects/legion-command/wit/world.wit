@@ -1,0 +1,3 @@
+package valkyrie:legion;
+
+world legion { }

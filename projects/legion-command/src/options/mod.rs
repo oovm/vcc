@@ -3,18 +3,44 @@ use std::io::ErrorKind;
 use clap::{Args, Subcommand, ValueEnum};
 
 use crate::{
-    cmd_package_manager::{AddCommand, RemoveCommand, UpdateCommand},
+    cmd_bin_manager::{AscendCommand, InstallCommand, UpgradeCommand},
+    cmd_build::{BenchmarkCommand, PublishCommand, RunCommand, TestCommand},
+    cmd_pkg_manager::{AddCommand, GetCommand, RemoveCommand},
     BuildCommand,
 };
 
 /// Doc comment
 #[derive(Subcommand)]
 pub enum ApplicationCommand {
+    /// Update legion & vpp to the latest version
+    Ascend(AscendCommand),
+    /// Install a new wasm binary
+    Install(InstallCommand),
+    /// Update the wasm binaries
+    Upgrade(UpgradeCommand),
+    /// Uninstall a wasm binary
+    Uninstall(InstallCommand),
+    /// Add a new dependency
     Add(AddCommand),
-    Update(UpdateCommand),
+    /// Update the dependencies
+    Get(GetCommand),
+    /// Remove a dependency
     #[command(alias = "rm")]
     Remove(RemoveCommand),
+
+    /// Build the project
+    Run(RunCommand),
+
+    /// Run the tests
+    Test(TestCommand),
+    /// Run the benchmarks
+    #[command(alias = "bench")]
+    Benchmark(BenchmarkCommand),
+    /// Build the project
     Build(BuildCommand),
+    /// Build the project
+    Publish(PublishCommand),
+
     #[command(external_subcommand)]
     External(Vec<String>),
 }
@@ -47,7 +73,7 @@ impl ApplicationCommand {
                 [] => {}
             },
             ApplicationCommand::Add(v) => v.run(),
-            ApplicationCommand::Update(v) => v.run(),
+            ApplicationCommand::Install(v) => v.run(),
             ApplicationCommand::Remove(v) => v.run(),
         }
     }

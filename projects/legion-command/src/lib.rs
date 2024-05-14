@@ -7,8 +7,9 @@ pub use crate::{
     options::{ApplicationCommand, SharedOptions},
 };
 
+mod cmd_bin_manager;
 mod cmd_build;
-mod cmd_package_manager;
+mod cmd_pkg_manager;
 mod options;
 
 #[derive(Parser)]

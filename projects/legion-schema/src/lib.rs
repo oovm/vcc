@@ -18,5 +18,6 @@ pub use crate::{
     workspace::LegionWorkspaceSetting,
 };
 
+mod global;
 mod packages;
 mod workspace;

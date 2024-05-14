@@ -1,3 +1,4 @@
+use semver::VersionReq;
 use std::str::FromStr;
 
 #[derive(Clone, Debug)]

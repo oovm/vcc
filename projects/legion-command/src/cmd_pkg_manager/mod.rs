@@ -1,12 +1,13 @@
 use std::path::PathBuf;
 
 use clap::Args;
+use warg_client::FileSystemClient;
 
 use legion_config::{PackageVersion, Url};
 
 use crate::options::SharedOptions;
 
-/// Add a
+/// Add a new dependency
 #[derive(Debug, Args)]
 pub struct AddCommand {
     /// Reference to a package to add as a dependency
@@ -27,20 +28,13 @@ pub struct AddCommand {
     options: SharedOptions,
 }
 
+/// Get latest info of dependency
+#[derive(Debug, Args)]
+pub struct GetCommand {}
+
 impl AddCommand {
     pub fn run(&self) {
-        println!("{self:#?}")
-    }
-}
-
-#[derive(Debug, Args)]
-pub struct UpdateCommand {
-    #[command(flatten)]
-    options: SharedOptions,
-}
-
-impl UpdateCommand {
-    pub fn run(&self) {
+        // FileSystemClient::new_with_default_config();
         println!("{self:#?}")
     }
 }

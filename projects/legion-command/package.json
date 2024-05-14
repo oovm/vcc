@@ -3,6 +3,8 @@
     "scripts": {
         "u": "cargo upgrade",
         "i": "cargo install --path . --debug --offline",
-        "p": "cargo publish --allow-dirty"
+        "p": "cargo publish --allow-dirty",
+        "run": "wasmtime run --wasm component-model legion.wasm",
+        "download": "warg download valkyrie:legion"
     }
 }
