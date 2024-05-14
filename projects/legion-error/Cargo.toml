@@ -1,0 +1,17 @@
+[package]
+name = "legion-error"
+version = "0.0.0"
+authors = ["192607617@qq.com"]
+edition = "2021"
+description = "High level intermediate representation for Nyar"
+repository = "https://github.com/nyar-lang/NyarNative"
+documentation = "https://docs.rs/legion-error"
+license = "MPL-2.0"
+
+[dependencies]
+
+
+[dev-dependencies]
+
+[features]
+default = []
