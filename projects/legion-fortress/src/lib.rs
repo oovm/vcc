@@ -1,3 +1,4 @@
+pub use crate::binary::InstallRequest;
 use legion_error::{LegionError, Result};
 use semver::Version;
 use std::{
@@ -8,6 +9,8 @@ use std::{
 };
 use winreg::{enums::HKEY_CURRENT_USER, RegKey};
 
+mod binary;
+
 const LEGION_FORTRESS: &str = r#"LEGION_FORTRESS"#;
 
 pub struct LegionFortress {
@@ -15,62 +18,14 @@ pub struct LegionFortress {
     runner: RunnerID,
 }
 
-pub struct PackageInstall {
-    pub names: Vec<String>,
-    pub version: Version,
-    pub alias: String,
-}
-
 pub struct RunnerID {
     pub runner: String,
     pub version: Version,
 }
+
 impl Display for RunnerID {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}@{}", self.runner, self.version)
-    }
-}
-impl Display for PackageInstall {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}@{}", self.names.join("꞉"), self.version)
-    }
-}
-
-impl PackageInstall {
-    pub fn name(&self) -> &str {
-        if !self.alias.is_empty() {
-            return &self.alias;
-        }
-        self.names.last().expect("PackageID must have at least one name")
-    }
-}
-
-impl LegionFortress {
-    pub fn install_script(&self, package: PackageInstall) -> Result<()> {
-        let cmd = format!(
-            "@echo off
-
-set RUNNER_PATH=\"{runner}.exe\"
-set TARGET_PATH=\"{target}.wasm\"
-
-%RUNNER_PATH% %TARGET_PATH% %*
-
-::: if %errorlevel% neq 0 (
-:::     echo Error occurred while running the WASM program.
-:::     exit /b %errorlevel%
-::: )
-",
-            runner = self.executable_path(self.runner.to_string()).display(),
-            target = self.executable_path(package.to_string()).display(),
-        );
-        let path = self.executable_path(format!("{}.cmd", package.name()));
-        match std::fs::write(&path, cmd) {
-            Ok(o) => Ok(o),
-            Err(e) => LegionError::io_error(e, path),
-        }
-    }
-    pub fn executable_path<P: AsRef<Path>>(&self, path: P) -> PathBuf {
-        self.root.join("executable").join(path)
     }
 }
 
@@ -100,7 +55,7 @@ impl LegionFortress {
         }
         match dir.canonicalize() {
             Ok(o) => Ok(Self {
-                root: o,
+                root: PathBuf::from(o.to_string_lossy().trim_start_matches("\\\\?\\")),
                 runner: RunnerID {
                     runner: "wasmtime".to_string(),
                     version: Version { major: 20, minor: 0, patch: 2, pre: Default::default(), build: Default::default() },

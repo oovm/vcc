@@ -1,4 +1,4 @@
-use legion_fortress::{LegionFortress, PackageInstall};
+use legion_fortress::{InstallRequest, LegionFortress};
 use semver::Version;
 
 #[test]
@@ -7,15 +7,19 @@ fn ready() {
 }
 
 #[test]
-fn export_package() -> legion_error::Result {
+fn export_package() {
     let root = LegionFortress::new().unwrap();
     root.insert_path().unwrap();
-    root.install_script(PackageInstall {
+    root.install_wasm(InstallRequest {
         names: vec!["valkyrie".to_string(), "legion".to_string()],
         version: Version { major: 0, minor: 0, patch: 4, pre: Default::default(), build: Default::default() },
-    });
-    root.install_script(PackageInstall {
+        alias: "".to_string(),
+    })
+    .unwrap();
+    root.install_wasm(InstallRequest {
         names: vec!["valkyrie".to_string(), "std".to_string()],
         version: Version { major: 0, minor: 0, patch: 4, pre: Default::default(), build: Default::default() },
+        alias: "".to_string(),
     })
+    .unwrap();
 }
